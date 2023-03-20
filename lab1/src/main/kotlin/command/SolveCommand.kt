@@ -1,65 +1,70 @@
 package command
 
 import solver.SimpleIterationSolver
+import util.FileReader
 import util.MatrixUtils
+import util.NumberReader
 
 class SolveCommand : AbstractCommand(
     "solve",
-    "решить СЛАУ, ввод через консоль"
+    "решить СЛАУ, ввод через консоль \n" +
+            "       -f <file_path> : ввод через файл"
 ) {
-    override fun execute() {
-        val matrix = mutableListOf<DoubleArray>()
-        val variables = mutableListOf<Double>()
-        val x0 = mutableListOf<Double>()
 
-        try {
-            print("Введите количество строк матрицы: ")
-            val rowsCount = readLine()?.toInt()
+    override fun execute(args: List<String>) {
 
-            println("Введите коэффициенты матрицы через пробел: ")
-
-            for (i in 1..rowsCount!!) {
-                println("$i строка: ")
-                val row = readLine()?.trimEnd()
-                matrix.add(row!!.split("\\s+".toRegex()).map { it.toDouble() }.toDoubleArray())
-
-                println("Введите свободный член: ")
-                val variable = readLine()?.toDouble()
-
-                if (variable != null) {
-                    variables.add(variable)
-                }
-
-            }
-
-            MatrixUtils.convertToDiagonallyDominant(matrix)
-
-            for (m in matrix){
-                println(m.contentToString())
-            }
-
-            for (i in 0 until rowsCount) {
-                x0.add(0.0)
-            }
-
-            print("Введите максимальное число итераций: ")
-            val maxIterations = readLine()?.toInt()
-            print("Введите точность: ")
-            val eps = readLine()?.toDouble()
-
-            if (maxIterations == null || eps == null) throw NumberFormatException()
-
-            val x = SimpleIterationSolver.solve(matrix, variables, x0, maxIterations, eps)
-
-            println("x = ${x.contentToString()}")
-
-        } catch (ne: NumberFormatException) {
-            println("Введите число!")
-            return
-        } catch (nullException: NullPointerException) {
-            println("Ошибка ввода!")
+        if (args.size > 2){
+            if (args[1] == "-f") fileExecution(args[2])
             return
         }
 
+        consoleExecution()
+
     }
+
+    private fun fileExecution(path: String){
+        val matrix = mutableListOf<DoubleArray>()
+        val variables = mutableListOf<Double>()
+
+        FileReader.readMatrix(path, matrix, variables)
+
+        execution(matrix, variables)
+
+    }
+
+    private fun consoleExecution(){
+        val matrix = mutableListOf<DoubleArray>()
+        val variables = mutableListOf<Double>()
+
+        MatrixUtils.readMatrixFromConsole(matrix, variables)
+
+        execution(matrix, variables)
+    }
+
+    private fun execution(matrix: MutableList<DoubleArray>, variables: MutableList<Double>){
+
+        if (!MatrixUtils.isDiagonallyDominant(matrix) && !MatrixUtils.convertToDiagonallyDominant(matrix)) {
+            return
+        }
+
+        println("---Исходная матрица---\n")
+        for (row in matrix) {
+            row.forEach { print("$it ") }
+            println("= ${variables[matrix.indexOf(row)]}")
+        }
+        println("\n----------------------")
+
+        val x0 = DoubleArray(matrix.size) { 0.0 }
+
+        val precision = NumberReader.readDouble("Введите точность: ")
+
+        val x = SimpleIterationSolver.solve(matrix, variables, x0, precision)
+
+        println("\nПриближения: ")
+        for (i in x.indices){
+            println("x${i} = ${x[i]}")
+        }
+        println()
+    }
+
 }

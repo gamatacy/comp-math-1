@@ -5,6 +5,6 @@ abstract class AbstractCommand(
     val description: String
 ) {
 
-    abstract fun execute()
+    abstract fun execute(args: List<String>)
 
 }
