@@ -32,6 +32,7 @@ class SolveCommand : AbstractCommand(
             size = arg.toInt()
         } catch (e: Exception) {
             println("Введите число!")
+            return
         }
 
         if (size > 20 || size < 2) println("Размер матрицы должен быть в пределе [2; 20]")
@@ -49,7 +50,7 @@ class SolveCommand : AbstractCommand(
         val matrix = mutableListOf<DoubleArray>()
         val variables = mutableListOf<Double>()
 
-        FileReader.readMatrix(path, matrix, variables)
+        if (!FileReader.readMatrix(path, matrix, variables)) return
 
         execution(matrix, variables)
 
