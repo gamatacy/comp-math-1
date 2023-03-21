@@ -8,13 +8,15 @@ import util.NumberReader
 class SolveCommand : AbstractCommand(
     "solve",
     "решить СЛАУ, ввод через консоль \n" +
-            "       -f <file_path> : ввод через файл"
+            "       -f <file_path> : ввод через файл\n" +
+            "       -r <matrix_size> : случайная матрица"
 ) {
 
     override fun execute(args: List<String>) {
 
-        if (args.size > 2){
+        if (args.size > 2) {
             if (args[1] == "-f") fileExecution(args[2])
+            else if (args[1] == "-r") randomExecution(args[2])
             return
         }
 
@@ -22,7 +24,28 @@ class SolveCommand : AbstractCommand(
 
     }
 
-    private fun fileExecution(path: String){
+    private fun randomExecution(arg: String) {
+
+        var size = 3
+
+        try {
+            size = arg.toInt()
+        } catch (e: Exception) {
+            println("Введите число!")
+        }
+
+        if (size > 20 || size < 2) println("Размер матрицы должен быть в пределе [2; 20]")
+
+        val matrix = MutableList(size) { DoubleArray(size) { 0.0 } }
+        val variables = MutableList(size) { 0.0 }
+
+        MatrixUtils.generateRandomMatrix(size, matrix, variables)
+
+        execution(matrix, variables)
+
+    }
+
+    private fun fileExecution(path: String) {
         val matrix = mutableListOf<DoubleArray>()
         val variables = mutableListOf<Double>()
 
@@ -32,7 +55,7 @@ class SolveCommand : AbstractCommand(
 
     }
 
-    private fun consoleExecution(){
+    private fun consoleExecution() {
         val matrix = mutableListOf<DoubleArray>()
         val variables = mutableListOf<Double>()
 
@@ -41,7 +64,7 @@ class SolveCommand : AbstractCommand(
         execution(matrix, variables)
     }
 
-    private fun execution(matrix: MutableList<DoubleArray>, variables: MutableList<Double>){
+    private fun execution(matrix: MutableList<DoubleArray>, variables: MutableList<Double>) {
 
         if (!MatrixUtils.isDiagonallyDominant(matrix) && !MatrixUtils.convertToDiagonallyDominant(matrix)) {
             return
@@ -61,10 +84,11 @@ class SolveCommand : AbstractCommand(
         val x = SimpleIterationSolver.solve(matrix, variables, x0, precision)
 
         println("\nПриближения: ")
-        for (i in x.indices){
+        for (i in x.indices) {
             println("x${i} = ${x[i]}")
         }
         println()
+
     }
 
 }

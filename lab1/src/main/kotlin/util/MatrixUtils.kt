@@ -1,6 +1,7 @@
 package util
 
 import kotlin.math.abs
+import kotlin.random.Random
 
 object MatrixUtils {
 
@@ -41,13 +42,13 @@ object MatrixUtils {
 
         if (count != matrix.size) {
 
-            for (i in matrix.indices){
+            for (i in matrix.indices) {
 
-                if (maxIndexes.containsKey(i)){
+                if (maxIndexes.containsKey(i)) {
 
-                    for (j in matrix.indices){
+                    for (j in matrix.indices) {
 
-                        if (maxIndexes.containsKey(j)){
+                        if (maxIndexes.containsKey(j)) {
 
                             if (i == maxIndexes[j] && maxIndexes[i] == j) {
                                 val temp = matrix[i]
@@ -117,6 +118,28 @@ object MatrixUtils {
 
         }
 
+    }
+
+    fun generateRandomMatrix(size: Int, matrix: MutableList<DoubleArray>, variables: MutableList<Double>) {
+        for (i in 0 until size) {
+            var sum = 0.0
+            for (j in 0 until size) {
+                if (i != j) {
+                    matrix[i][j] = Random.nextDouble(-100.0, 100.0)
+                    sum += abs(matrix[i][j])
+                }
+            }
+
+            if (Random.nextBoolean()) matrix[i][i] = Random.nextDouble(sum, sum * 2)
+            else matrix[i][i] = Random.nextDouble(-sum * 2, -sum)
+
+            variables[i] = Random.nextDouble(-100.0, 100.0)
+
+        }
+    }
+
+    fun calculateSolutionError(b: MutableList<Double>, x: DoubleArray, matrix: MutableList<DoubleArray>): DoubleArray {
+        return doubleArrayOf()
     }
 
 }

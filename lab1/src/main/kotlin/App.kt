@@ -3,8 +3,6 @@ import command.ExitCommand
 import command.HelpCommand
 import command.SolveCommand
 import console.ConsoleManager
-import solver.SimpleIterationSolver
-import util.FileReader
 
 fun main() {
 
@@ -16,8 +14,5 @@ fun main() {
         SolveCommand()
     )
     consoleManager.run()
-
-
-
 
 }
