@@ -4,7 +4,12 @@ import kotlin.math.abs
 
 object SimpleIterationSolver {
 
-    fun solve(matrix: MutableList<DoubleArray>, variables: MutableList<Double>, x0: DoubleArray, eps: Double): DoubleArray {
+    fun solve(
+        matrix: MutableList<DoubleArray>,
+        variables: MutableList<Double>,
+        x0: DoubleArray,
+        eps: Double
+    ): DoubleArray {
         val n = matrix.size
         var x = x0
         var iterationsCount = 0
@@ -35,7 +40,7 @@ object SimpleIterationSolver {
             iterationsCount++
         }
 
-        println("Решение найдено за $iterationsCount итераций")
+        println("Решение найдено за $iterationsCount итераций, погрешность: $error")
         return x
     }
 

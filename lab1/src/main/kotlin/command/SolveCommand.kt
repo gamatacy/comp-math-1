@@ -80,13 +80,13 @@ class SolveCommand : AbstractCommand(
 
         val x0 = DoubleArray(matrix.size) { 0.0 }
 
-        val precision = NumberReader.readDouble("Введите точность: ")
+        val eps = NumberReader.readDouble("Введите точность: ")
 
-        val x = SimpleIterationSolver.solve(matrix, variables, x0, precision)
+        val x = SimpleIterationSolver.solve(matrix, variables, x0, eps)
 
         println("\nПриближения: ")
         for (i in x.indices) {
-            println("x${i} = ${x[i]}")
+            println("x${i+1} = ${x[i]}")
         }
         println()
 

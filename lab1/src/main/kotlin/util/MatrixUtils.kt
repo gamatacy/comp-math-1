@@ -138,8 +138,4 @@ object MatrixUtils {
         }
     }
 
-    fun calculateSolutionError(b: MutableList<Double>, x: DoubleArray, matrix: MutableList<DoubleArray>): DoubleArray {
-        return doubleArrayOf()
-    }
-
 }
