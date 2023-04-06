@@ -14,6 +14,7 @@ object SimpleIterationSolver {
         var x = x0
         var iterationsCount = 0
         var error = Double.MAX_VALUE
+        var errorArray = DoubleArray(n) {0.0}
 
         while (error > eps) {
             val xNew = DoubleArray(n) { 0.0 }
@@ -34,13 +35,20 @@ object SimpleIterationSolver {
 
             for (i in 0 until n) {
                 error += abs(xNew[i] - x[i])
+                errorArray[i] = xNew[i] - x[i]
             }
 
             x = xNew
             iterationsCount++
         }
 
-        println("Решение найдено за $iterationsCount итераций, погрешность: $error")
+        println("Решение найдено за $iterationsCount итераций")
+
+        println("Погрешности: ")
+        for (i in errorArray.indices){
+            println("x${i+1} = ${errorArray[i]}")
+        }
+
         return x
     }
 
