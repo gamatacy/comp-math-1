@@ -5,8 +5,8 @@ import util.FileReader
 import util.MatrixUtils
 import util.NumberReader
 
-class SolveCommand : AbstractCommand(
-    "solve",
+class SolveSlaeCommand : AbstractCommand(
+    "solve-slae",
     "решить СЛАУ, ввод через консоль \n" +
             "       -f <file_path> : ввод через файл\n" +
             "       -r <matrix_size> : случайная матрица"

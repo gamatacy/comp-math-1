@@ -1,7 +1,4 @@
-import command.CommandManager
-import command.ExitCommand
-import command.HelpCommand
-import command.SolveCommand
+import command.*
 import console.ConsoleManager
 
 fun main() {
@@ -11,7 +8,8 @@ fun main() {
     commandManager.registerCommands(
         HelpCommand(commandManager.getCommands()),
         ExitCommand(),
-        SolveCommand()
+        SolveSlaeCommand(),
+        SolveNonLeCommand()
     )
     consoleManager.run()
 
